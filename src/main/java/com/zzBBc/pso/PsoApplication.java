@@ -4,8 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-import com.zzBBc.pso.domain.Particle;
-import com.zzBBc.pso.domain.TspData;
+import com.zzBBc.pso.entity.Particle;
+import com.zzBBc.pso.entity.TspData;
 import com.zzBBc.pso.manager.ResultManager;
 import com.zzBBc.pso.manager.SwarmManager;
 
