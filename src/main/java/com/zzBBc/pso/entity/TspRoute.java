@@ -6,7 +6,7 @@ public class TspRoute extends Route {
 
 	}
 
-	public TspRoute(double[][] distanceLookup, Integer[] destinationIndex) {
+	public TspRoute(int[][] distanceLookup, Integer[] destinationIndex) {
 		setDistanceLookup(distanceLookup);
 		setDestinationIndex(destinationIndex);
 
@@ -21,7 +21,6 @@ public class TspRoute extends Route {
 		route.setDestinationIndex(getDestinationIndex());
 		route.setDistanceLookup(getDistanceLookup());
 		route.setTourDistance(getTourDistance());
-		route.setSegmentSize(getSegmentSize());
 
 		return route;
 	}
@@ -29,17 +28,19 @@ public class TspRoute extends Route {
 	@Override
 	public double calculateTotalDistance() {
 		Integer[] destinationIndex = getDestinationIndex();
-		double[][] distanceLookup = getDistanceLookup();
+		int[][] distanceLookup = getDistanceLookup();
 
 		double total = 0;
 
-		for(int i = 0; i < destinationIndex.length; i++)
+		for(int i = 0; i < destinationIndex.length; i++){
 			// Don't forget to add in the distance between the
 			// last city in the array and the first city
-			if(i == destinationIndex.length - 1)
+			if(i == destinationIndex.length - 1){
 				total += distanceLookup[destinationIndex[i]][destinationIndex[0]];
-			else
+			} else{
 				total += distanceLookup[destinationIndex[i]][destinationIndex[i + 1]];
+			}
+		}
 
 		setTourDistance(total);
 

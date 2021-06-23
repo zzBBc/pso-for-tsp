@@ -1,7 +1,7 @@
 package com.zzBBc.pso.entity;
 
 public class TspData {
-	private double[][] distanceLookup;
+	private int[][] distanceLookup;
 	private Integer[] bestRoute;
 	private int cityCount;
 
@@ -24,11 +24,11 @@ public class TspData {
 		this.cityCount = cityCount;
 	}
 
-	public double[][] getDistanceLookup() {
+	public int[][] getDistanceLookup() {
 		return distanceLookup;
 	}
 
-	public void setDistanceLookup(double[][] distanceLookup) {
+	public void setDistanceLookup(int[][] distanceLookup) {
 		this.distanceLookup = distanceLookup;
 		cityCount = distanceLookup.length;
 	}

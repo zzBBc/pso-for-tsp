@@ -5,7 +5,7 @@ import java.util.Arrays;
 public abstract class Route {
 	private double tourDistance;
 	private Integer[] destinationIndex;
-	private double[][] distanceLookup;
+	private int[][] distanceLookup;
 	private int segmentSize;
 
 	@Override
@@ -31,11 +31,11 @@ public abstract class Route {
 		this.destinationIndex = destinationIndex.clone();
 	}
 
-	public double[][] getDistanceLookup() {
+	public int[][] getDistanceLookup() {
 		return distanceLookup;
 	}
 
-	public void setDistanceLookup(double[][] distanceLookup) {
+	public void setDistanceLookup(int[][] distanceLookup) {
 		this.distanceLookup = distanceLookup;
 	}
 
