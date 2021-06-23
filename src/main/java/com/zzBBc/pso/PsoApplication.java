@@ -27,9 +27,9 @@ public class PsoApplication {
 
 		System.out.println("Starting Optimizer. Listing shortest trips found...");
 
-		double bestPossibleDistance = swarmManager.getBestPossibleDistance(tspData);
+		// double bestPossibleDistance = swarmManager.getBestPossibleDistance(tspData);
 
-		resultManager.reset((int) bestPossibleDistance);
+		// resultManager.reset((int) bestPossibleDistance);
 
 		int iterations = 1;
 		long start = System.currentTimeMillis();
@@ -45,52 +45,37 @@ public class PsoApplication {
 
 		System.out.println("\r\n  Optimizer completed in " + elapsedTime + " miliseconds");
 		System.out.println(resultManager.getBestDistanceFound());
-		System.out.println(resultManager.getBestPossibleDistance());
-		System.out.println(swarmManager.getSwarmOptimizer().getBestGlobalItinery());
+		// System.out.println(resultManager.getBestPossibleDistance());
+		System.out.println(swarmManager.getSwarmOptimizer().getGlobalBestRoute());
 	}
 
 	private static TspData getTspData() throws FileNotFoundException {
 		TspData tspData = new TspData();
 
-		Scanner scan = new Scanner(new File("text.txt"));
+		Scanner scan = new Scanner(new File(Constants.FILE_PATH));
 
-		int cityCount = 76;
-		double[][] distanceLookup = new double[cityCount][cityCount];
-		Integer[] bestRoutes = new Integer[cityCount];
+		int cityCount = Constants.CITY_COUNT;
+		int[][] distanceLookup = new int[cityCount][cityCount];
 
 		int i = 0;
 		int j = 0;
+
 		while(scan.hasNext()){
-			if(i == bestRoutes.length){
-				i = 0;
-
-				break;
-			}
-
 			try{
-				bestRoutes[i] = Integer.parseInt(scan.next());
-				i++;
-			} catch(NumberFormatException e){
-			}
-
-		}
-
-		tspData.setBestRoute(bestRoutes);
-
-		while(scan.hasNext())
-			try{
-				if(j == distanceLookup.length)
+				if(j == distanceLookup.length){
 					break;
+				}
 
 				if(i == distanceLookup.length){
 					j++;
 					i = 0;
 				}
 
-				distanceLookup[i][j] = Double.parseDouble(scan.next());
+				distanceLookup[i][j] = Integer.parseInt(scan.next());
 				i++;
 			} catch(NumberFormatException e){
 			}
+		}
 
 		tspData.setDistanceLookup(distanceLookup);
 

@@ -12,7 +12,7 @@ import com.zzBBc.pso.entity.TspParticle;
 import com.zzBBc.pso.entity.TspRoute;
 
 public class SwarmOptimizer {
-	private Route bestGlobalItinery;
+	private Route globalBestRoute;
 
 	public Particle[] buildSwarm(TspData tspData) {
 		Particle[] swarm = new Particle[Constants.SWARM_SIZE];
@@ -23,39 +23,11 @@ public class SwarmOptimizer {
 			swarm[i] = new TspParticle(route);
 		}
 
-		Integer[] particleIndex = initArray(Constants.SWARM_SIZE);
-
-		updateInformers(swarm, particleIndex);
+		// Integer[] particleIndex = initArray(Constants.SWARM_SIZE);
+		//
+		// updateInformers(swarm, particleIndex);
 
 		return swarm;
-	}
-
-	private void updateInformers(Particle[] swarm, Integer[] particleIndexes) {
-		List<Particle> informers = new ArrayList<>();
-		int informerCount = Constants.MAX_INFORMERS + 1;
-
-		for(int i = 1; i < particleIndexes.length + 1; i++){
-			Integer particleIndex = particleIndexes[i - 1];
-			informers.add(swarm[particleIndex]);
-
-			if(i % informerCount == 0){
-				addInformersToParticle(informers);
-
-				informers.clear();
-			}
-		}
-
-		// the number of informers added here
-		// will be less than the informer count
-		addInformersToParticle(informers);
-	}
-
-	private void addInformersToParticle(List<Particle> informers) {
-		for(Particle tspParticle: informers){
-			tspParticle.getInformersList().clear();
-			tspParticle.getInformersList().addAll(informers);
-			tspParticle.getInformersList().remove(tspParticle);
-		}
 	}
 
 	private Route getNewRoute(TspData tspData) {
@@ -71,8 +43,9 @@ public class SwarmOptimizer {
 	public Integer[] initArray(int cityCount) {
 		List<Integer> array = new ArrayList<>();
 
-		for(int i = 0; i < cityCount; i++)
+		for(int i = 0; i < cityCount; i++){
 			array.add(i);
+		}
 
 		Collections.shuffle(array);
 
@@ -80,58 +53,59 @@ public class SwarmOptimizer {
 	}
 
 	public int optimize(Particle[] swarm, boolean isPrintBestDistance) {
-		bestGlobalItinery = swarm[0].getCurrentRoute().clone();
+		globalBestRoute = swarm[0].getPersonalBestRoute().clone();
 
-		Integer[] particleIndex = initArray(Constants.SWARM_SIZE);
+		// Integer[] particleIndex = initArray(Constants.SWARM_SIZE);
 
 		int epoch = 0;
-		int staticEpochs = 0;
 
 		while(epoch < Constants.MAX_EPOCHS){
-			boolean isDistanceImproved = false;
+			// boolean isDistanceImproved = false;
 
 			for(Particle particle: swarm){
 				double distance = 0;
 
 				try{
-					distance = particle.optimize();
+					distance = particle.optimize(globalBestRoute);
 				} catch(Exception e){
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
-				if(distance < bestGlobalItinery.getTourDistance()){
-					particle.getCurrentRoute().copyTo(bestGlobalItinery);
+				if(distance < globalBestRoute.getTourDistance()){
+					globalBestRoute = particle.getPersonalBestRoute().clone();
 
-					isDistanceImproved = true;
+					// isDistanceImproved = true;
 					if(isPrintBestDistance){
-						System.out.println(particle);
+						System.out.println(globalBestRoute);
 						System.out.println(distance);
 						System.out.println();
 					}
 				}
 			}
 
-			if(!isDistanceImproved){
-				staticEpochs++;
-
-				if(staticEpochs == Constants.MAX_STATIC_EPOCHS){
-					updateInformers(swarm, particleIndex);
-					staticEpochs = 0;
-				}
-			}
+			// if(!isDistanceImproved){
+			// staticEpochs++;
+			//
+			// if(staticEpochs == Constants.MAX_STATIC_EPOCHS){
+//					updateInformers(swarm, particleIndex);
+			//// staticEpochs = 0;
+			// break;
+			// }
+			// }
 
 			epoch++;
 		}
 
-		return (int) bestGlobalItinery.getTourDistance();
+		return (int) globalBestRoute.getTourDistance();
 	}
 
-	public Route getBestGlobalItinery() {
-		return bestGlobalItinery;
+	public Route getGlobalBestRoute() {
+		return globalBestRoute;
 	}
 
-	public void setBestGlobalItinery(Route bestGlobalItinery) {
-		this.bestGlobalItinery = bestGlobalItinery;
+	public void setGlobalBestRoute(Route globalBestRoute) {
+		this.globalBestRoute = globalBestRoute;
 	}
+
 }

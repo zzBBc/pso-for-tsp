@@ -20,14 +20,16 @@ public class ResultManager {
 	}
 
 	public void updateResults(int distance) {
-		if(bestDistanceFound == 0 || bestDistanceFound > distance)
+		if(bestDistanceFound == 0 || bestDistanceFound > distance){
 			bestDistanceFound = distance;
+		}
 
 		// if(distance == bestPossibleDistance)
 		// correctResultFound++;
 
-		if(distance > highestDistanceFound)
+		if(distance > highestDistanceFound){
 			highestDistanceFound = distance;
+		}
 
 		// int error = Math.abs(bestPossibleDistance - distance) /
 		// bestPossibleDistance;

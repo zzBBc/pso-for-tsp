@@ -1,7 +1,5 @@
 package com.zzBBc.pso.entity;
 
-import java.util.ArrayList;
-
 import com.zzBBc.pso.optimizer.ParticleOptimizer;
 import com.zzBBc.pso.optimizer.TspParticleOptimizer;
 
@@ -11,38 +9,24 @@ public class TspParticle extends Particle {
 	public TspParticle(Route route) {
 		setCurrentRoute(route);
 		setPersonalBestRoute(route);
-		setInformersList(new ArrayList<>());
 	}
 
 	@Override
-	public double optimize() throws Exception {
-		Route localBestRoute = getLocalBestRoute();
-		setLocalBestRoute(localBestRoute);
-
+	public double optimize(Route globalBestRoute) {
 		Route personalBestRoute = getPersonalBestRoute();
 		Route currentRoute = getCurrentRoute();
 
-		Integer[] destinationIndex
-				= particleOptimizer.getOptimizedDestinationIndex(currentRoute, personalBestRoute, localBestRoute);
+		Integer[] destinationIndex =
+				particleOptimizer.getOptimizedDestinationIndex(currentRoute, personalBestRoute, globalBestRoute);
 		currentRoute.setDestinationIndex(destinationIndex);
-		setCurrentRoute(currentRoute);
+		// setCurrentRoute(currentRoute);
 
 		double currentDistance = currentRoute.calculateTotalDistance();
 
-		if(currentDistance < personalBestRoute.calculateTotalDistance())
-			personalBestRoute.setDestinationIndex(currentRoute.getDestinationIndex());
+		if(currentDistance < personalBestRoute.calculateTotalDistance()){
+			personalBestRoute.setDestinationIndex(destinationIndex);
+		}
 
 		return currentDistance;
-	}
-
-	@Override
-	public Route getLocalBestRoute() {
-		Route localBestRoute = getPersonalBestRoute();
-
-		for(Particle particle: getInformersList())
-			if(localBestRoute.getTourDistance() > particle.getPersonalBestRoute().getTourDistance())
-				localBestRoute = particle.getPersonalBestRoute();
-
-		return localBestRoute;
 	}
 }
