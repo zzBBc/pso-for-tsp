@@ -1,37 +1,20 @@
 package com.zzBBc.branchbound;
 
+import static java.lang.System.exit;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.Stack;
 
-import static java.lang.System.exit;
+import com.zzBBc.pso.Constants;
 
 public class Main {
-    private static int[][] graph;
+
 
     public static void main(String[] args) {
-
-        args = new String[1];
-        // Change the file path here !!!!!!
-        args[0] = "C:\\Users\\LENOVO\\Downloads\\Compressed\\pso-for-tsp-main\\pso-for-tsp-main\\src\\main\\java\\com\\zzBBc\\branchbound\\graph_city.txt";
-        // args[1] =
-        // "C:\\Users\\LENOVO\\Downloads\\Compressed\\pso-for-tsp-main\\pso-for-tsp-main\\src\\main\\java\\com\\zzBBc\\branchbound\\graph_notsymmetric";
-
-        // If the user does not give a filepath for the graph
-        // if (args.length != 1) {
-        // System.out.println(".txt file not specified");
-        // exit(1);
-        // }
-
-        // Reads the adj matrix of the graph from the file given in main
-        try {
-            readGraphFromFile(args[0]);
-        } catch (Exception e) {
-            System.out.println("Error reading from " + args[0] + " file");
-            System.out.println(e.getMessage());
-            exit(1);
-        }
+		int[][] graph =
+				getGraphFromFile(args);
 
         Stack<Integer> bestPath;
         long start;
@@ -48,8 +31,9 @@ public class Main {
             bestPath = branchBoundTSP.getShortestPath();
 
             System.out.print("Path Taken: " + bestPath.pop());
-            while (!bestPath.isEmpty())
-                System.out.print("-> " + bestPath.pop());
+            while (!bestPath.isEmpty()){
+				System.out.print("-> " + bestPath.pop());
+			}
 
             System.out.println();
             // finding the time after the operation is executed
@@ -65,21 +49,39 @@ public class Main {
 
     }
 
+	private static int[][] getGraphFromFile(String[] args) {
+		int[][] graph = null;
+        try {
+			graph = readGraphFromFile(Constants.FILE_PATH);
+        } catch (Exception e) {
+			// System.out.println("Error reading from " + args[0] + " file");
+            System.out.println(e.getMessage());
+            exit(1);
+        }
+		return graph;
+	}
+
     // Reading the graph's adj matrix from the given .txt file
-    private static void readGraphFromFile(String fileName) throws FileNotFoundException {
+	private static int[][] readGraphFromFile(String fileName) throws FileNotFoundException {
+		int[][] graph = null;
         // Used to get the size of the array
-        Scanner scanner = new Scanner(new File(fileName));
-        String firstLine = scanner.nextLine();
-        String[] data = firstLine.split(" "); // *First number on first line of the file must not have a "space"*
-        int n = data.length;
-        scanner.close();
+		// Scanner scanner = new Scanner(new File(fileName));
+		// String firstLine = scanner.nextLine();
+		// String[] data = firstLine.split(" "); // *First number on first line of the
+		// file must not have a "space"*
+		int n = Constants.CITY_COUNT;
+		// scanner.close();
 
         // Copy the graph to the graph array
-        scanner = new Scanner(new File(fileName));
+		Scanner scanner = new Scanner(new File(fileName));
         graph = new int[n][n];
         for (int r = 0; r < n; r++) {
-            for (int c = 0; c < n; c++)
-                graph[r][c] = scanner.nextInt();
+            for (int c = 0; c < n; c++){
+				graph[r][c] = scanner.nextInt();
+			}
         }
+
+		scanner.close();
+		return graph;
     }
 }
