@@ -10,8 +10,10 @@ public class TspParticleOptimizer implements ParticleOptimizer {
 	private RouteManager routeManager = new RouteManager();
 
 	@Override
-	public Integer[] getOptimizedDestinationIndex(Route currentRoute, Route personBestRoute, Route localBestRoute) {
-		double currentVelocity = routeManager.updateVelocity(currentRoute, Constants.W, 1);
+	public Integer[]
+			getOptimizedDestinationIndex(Route currentRoute, Route personBestRoute, Route localBestRoute, int epoch) {
+		double currentVelocity = routeManager
+				.updateVelocity(currentRoute, Constants.W, (Constants.MAX_EPOCHS - epoch) / Constants.MAX_EPOCHS);
 		// w * x[i] + (Pbest - x[i]) * c1 * random + (Gbest - x[i]) * c2 *
 		// random
 		double personBestVelocity

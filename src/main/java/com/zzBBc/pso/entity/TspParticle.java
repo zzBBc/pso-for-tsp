@@ -12,12 +12,12 @@ public class TspParticle extends Particle {
 	}
 
 	@Override
-	public double optimize(Route globalBestRoute) {
+	public double optimize(Route globalBestRoute, int epoch) {
 		Route personalBestRoute = getPersonalBestRoute();
 		Route currentRoute = getCurrentRoute();
 
 		Integer[] destinationIndex =
-				particleOptimizer.getOptimizedDestinationIndex(currentRoute, personalBestRoute, globalBestRoute);
+				particleOptimizer.getOptimizedDestinationIndex(currentRoute, personalBestRoute, globalBestRoute, epoch);
 		currentRoute.setDestinationIndex(destinationIndex);
 		// setCurrentRoute(currentRoute);
 

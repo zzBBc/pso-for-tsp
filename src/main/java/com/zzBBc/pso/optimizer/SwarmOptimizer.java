@@ -66,7 +66,7 @@ public class SwarmOptimizer {
 				double distance = 0;
 
 				try{
-					distance = particle.optimize(globalBestRoute);
+					distance = particle.optimize(globalBestRoute, epoch);
 				} catch(Exception e){
 					// TODO Auto-generated catch block
 					e.printStackTrace();
