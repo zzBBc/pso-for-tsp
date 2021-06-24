@@ -75,11 +75,24 @@ public class Main {
         // Copy the graph to the graph array
 		Scanner scanner = new Scanner(new File(fileName));
         graph = new int[n][n];
-        for (int r = 0; r < n; r++) {
-            for (int c = 0; c < n; c++){
-				graph[r][c] = scanner.nextInt();
+		int i = 0;
+		int j = 0;
+		while(scanner.hasNext()){
+			try{
+				if(j == graph.length){
+					break;
+				}
+
+				if(i == graph.length){
+					j++;
+					i = 0;
+				}
+
+				graph[i][j] = Integer.parseInt(scanner.next());
+				i++;
+			} catch(NumberFormatException e){
 			}
-        }
+		}
 
 		scanner.close();
 		return graph;
