@@ -28,7 +28,6 @@ public abstract class Particle {
 				+ ", \r\n"
 				+ "]";
 	}
-
-	public abstract double optimize(Route globalBestRoute, int epoch);
-
+  
+  public abstract double optimize(Route globalBestRoute, int epoch);
 }
